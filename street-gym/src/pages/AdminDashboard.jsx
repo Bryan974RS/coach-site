@@ -31,9 +31,14 @@ export default function AdminDashboard() {
       .insert({ student_id: studentId, coach_id: coachId });
 
     if (error) {
-      alert("Erreur : " + error.message);
+      if (error.code === "23505") {
+        alert("Ce coach est déjà assigné à cet étudiant.");
+      } else {
+        alert("Erreur : " + error.message);
+      }
     } else {
       alert("Coach assigné !");
+      loadProfiles();
     }
   }
 
@@ -52,22 +57,6 @@ export default function AdminDashboard() {
         Chargement...
       </p>
     );
-  }
-  async function assignCoach(studentId, coachId) {
-    if (!coachId) return;
-    const { error } = await supabase
-      .from("assignments")
-      .insert({ student_id: studentId, coach_id: coachId });
-
-    if (error) {
-      if (error.code === "23505") {
-        alert("Ce coach est déjà assigné à cet étudiant.");
-      } else {
-        alert("Erreur : " + error.message);
-      }
-    } else {
-      alert("Coach assigné !");
-    }
   }
 
   return (
