@@ -53,6 +53,22 @@ export default function AdminDashboard() {
       </p>
     );
   }
+  async function assignCoach(studentId, coachId) {
+    if (!coachId) return;
+    const { error } = await supabase
+      .from("assignments")
+      .insert({ student_id: studentId, coach_id: coachId });
+
+    if (error) {
+      if (error.code === "23505") {
+        alert("Ce coach est déjà assigné à cet étudiant.");
+      } else {
+        alert("Erreur : " + error.message);
+      }
+    } else {
+      alert("Coach assigné !");
+    }
+  }
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-20">
