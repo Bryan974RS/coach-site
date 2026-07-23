@@ -1,3 +1,8 @@
+export const BRAND = {
+  name1: "CALIS",
+  name2: "TRUN",
+  full: "Calistrun Fitness",
+};
 export const COLORS = {
   bg: "#0B0B0C",
   bgAlt: "#141416",

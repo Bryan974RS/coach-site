@@ -1,4 +1,4 @@
-import { COLORS } from "../data";
+import { COLORS, BRAND } from "../data";
 
 export default function Hero() {
   return (
@@ -16,12 +16,11 @@ export default function Hero() {
         className="mt-4 leading-[0.95]"
         style={{ fontSize: "clamp(2.8rem, 8vw, 6rem)", color: COLORS.text }}
       >
-        LA BARRE NE MENT
-        <br />
-        <span style={{ color: COLORS.red }}>JAMAIS.</span>
+        {BRAND.name1}
+        <span style={{ color: COLORS.red }}>{BRAND.name2}</span>
       </h1>
       <p className="mt-6 max-w-xl text-lg" style={{ color: COLORS.textMuted }}>
-        Street Workout encadré par des coachs de l'association. Choisis ton
+        Street Workout encadré par les coachs de {BRAND.full}. Choisis ton
         coach, suis ton programme, progresse avec le collectif.
       </p>
       <div className="flex flex-wrap gap-4 mt-8">

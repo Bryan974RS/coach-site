@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { COLORS, NAV_LINKS, DISCOVER_LINKS } from "../data";
+import { COLORS, NAV_LINKS, DISCOVER_LINKS, BRAND } from "../data";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { supabase } from "../supabaseClient";
@@ -32,7 +32,8 @@ export default function Navbar() {
       <nav className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
         <a href="/" className="flex items-center gap-2">
           <span style={{ fontSize: 22, color: COLORS.text, lineHeight: 1 }}>
-            STREET<span style={{ color: COLORS.red }}>GYM</span>
+            {BRAND.name1}
+            <span style={{ color: COLORS.red }}>{BRAND.name2}</span>
           </span>
         </a>
 

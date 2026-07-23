@@ -1,4 +1,4 @@
-import { COLORS } from "../data";
+import { COLORS, BRAND } from "../data";
 
 export default function Presentation() {
   return (
@@ -22,11 +22,10 @@ export default function Presentation() {
           portée par le collectif.
         </h2>
         <p className="mt-6 leading-relaxed" style={{ color: COLORS.textMuted }}>
-          Street Gym Association réunit les pratiquants de street workout de
-          l'île autour d'un même terrain d'entraînement : la rue, les barres,
-          l'effort en groupe. Nos coachs construisent des programmes adaptés à
-          chaque niveau, du premier tirage de barre à la préparation
-          compétition.
+          {BRAND.full} réunit les pratiquants de street workout de l'île autour
+          d'un même terrain d'entraînement : la rue, les barres, l'effort en
+          groupe. Nos coachs construisent des programmes adaptés à chaque
+          niveau, du premier tirage de barre à la préparation compétition.
         </p>
       </div>
       <div
