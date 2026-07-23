@@ -11,6 +11,7 @@ import Espace from "./pages/Espace";
 import AdminDashboard from "./pages/AdminDashboard";
 import CoachDashboard from "./pages/CoachDashboard";
 import StudentDashboard from "./pages/StudentDashboard";
+import Chat from "./pages/Chat";
 
 function HomePage() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/coach" element={<CoachDashboard />} />
         <Route path="/etudiant" element={<StudentDashboard />} />
+        <Route path="/chat/:assignmentId" element={<Chat />} />
       </Routes>
       <Footer />
     </>
