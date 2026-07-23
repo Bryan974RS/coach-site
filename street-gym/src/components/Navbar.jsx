@@ -1,11 +1,22 @@
 import { useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { COLORS, NAV_LINKS, DISCOVER_LINKS } from "../data";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext";
+import { supabase } from "../supabaseClient";
+import { useRef } from "react";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [discoverOpen, setDiscoverOpen] = useState(false);
+  const { user, profile } = useAuth();
+  const navigate = useNavigate();
+  const closeTimeout = useRef(null);
+
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    navigate("/");
+  }
 
   return (
     <header
@@ -19,7 +30,7 @@ export default function Navbar() {
       }}
     >
       <nav className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
-        <a href="#top" className="flex items-center gap-2">
+        <a href="/" className="flex items-center gap-2">
           <span style={{ fontSize: 22, color: COLORS.text, lineHeight: 1 }}>
             STREET<span style={{ color: COLORS.red }}>GYM</span>
           </span>
@@ -28,8 +39,16 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-8">
           <div
             className="relative"
-            onMouseEnter={() => setDiscoverOpen(true)}
-            onMouseLeave={() => setDiscoverOpen(false)}
+            onMouseEnter={() => {
+              clearTimeout(closeTimeout.current);
+              setDiscoverOpen(true);
+            }}
+            onMouseLeave={() => {
+              closeTimeout.current = setTimeout(
+                () => setDiscoverOpen(false),
+                200,
+              );
+            }}
           >
             <button
               className="flex items-center gap-1 text-sm font-medium"
@@ -73,21 +92,44 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
-          <Link
-            to="/connexion"
-            className="text-sm font-medium"
-            style={{ color: COLORS.textMuted }}
-          >
-            Se connecter
-          </Link>
-
-          <Link
-            to="/inscription"
-            className="text-sm font-semibold px-5 py-2 rounded-full"
-            style={{ background: COLORS.red, color: "#0B0B0C" }}
-          >
-            S'inscrire
-          </Link>
+          {user ? (
+            <>
+              <Link
+                to="/espace"
+                className="text-sm font-medium"
+                style={{ color: COLORS.text }}
+              >
+                Mes messages
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="text-sm font-semibold px-5 py-2 rounded-full"
+                style={{
+                  border: `1px solid ${COLORS.steel}`,
+                  color: COLORS.text,
+                }}
+              >
+                Déconnexion
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/connexion"
+                className="text-sm font-medium"
+                style={{ color: COLORS.textMuted }}
+              >
+                Se connecter
+              </Link>
+              <Link
+                to="/inscription"
+                className="text-sm font-semibold px-5 py-2 rounded-full"
+                style={{ background: COLORS.red, color: "#0B0B0C" }}
+              >
+                S'inscrire
+              </Link>
+            </>
+          )}
         </div>
 
         <button
@@ -118,13 +160,35 @@ export default function Navbar() {
               {l.label}
             </a>
           ))}
-          <Link
-            to="#inscription"
-            className="text-sm font-semibold px-5 py-3 rounded-full text-center"
-            style={{ background: COLORS.red, color: "#0B0B0C" }}
-          >
-            S'inscrire
-          </Link>
+          {user ? (
+            <>
+              <Link
+                to="/espace"
+                className="text-sm font-medium pt-4"
+                style={{ color: COLORS.text }}
+              >
+                Mes messages
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="text-sm font-semibold px-5 py-3 rounded-full text-center"
+                style={{
+                  border: `1px solid ${COLORS.steel}`,
+                  color: COLORS.text,
+                }}
+              >
+                Déconnexion
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/inscription"
+              className="text-sm font-semibold px-5 py-3 rounded-full text-center"
+              style={{ background: COLORS.red, color: "#0B0B0C" }}
+            >
+              S'inscrire
+            </Link>
+          )}
         </div>
       )}
     </header>

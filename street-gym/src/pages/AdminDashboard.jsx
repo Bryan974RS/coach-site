@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
 import { COLORS } from "../data";
+import { Link } from "react-router-dom";
 
 export default function AdminDashboard() {
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [assignments, setAssignments] = useState([]);
 
   useEffect(() => {
     loadProfiles();
+    loadAssignments();
   }, []);
 
   async function loadProfiles() {
@@ -19,6 +22,17 @@ export default function AdminDashboard() {
 
     if (!error) setProfiles(data);
     setLoading(false);
+  }
+
+  async function loadAssignments() {
+    const { data, error } = await supabase
+      .from("assignments")
+      .select(
+        "id, status, ended_at, end_reason, student:profiles!assignments_student_id_fkey(full_name), coach:profiles!assignments_coach_id_fkey(full_name)",
+      )
+      .order("created_at", { ascending: false });
+
+    if (!error) setAssignments(data);
   }
 
   const students = profiles.filter((p) => p.role === "student");
@@ -126,6 +140,36 @@ export default function AdminDashboard() {
           >
             <span style={{ color: COLORS.text }}>{c.full_name}</span>
           </div>
+        ))}
+      </div>
+      <h2 className="text-xl mb-4 mt-12" style={{ color: COLORS.text }}>
+        Conversations
+      </h2>
+      <div className="flex flex-col gap-3">
+        {assignments.map((a) => (
+          <Link
+            key={a.id}
+            to={`/chat/${a.id}`}
+            className="flex items-center justify-between rounded-lg p-4"
+            style={{
+              background: COLORS.bgAlt,
+              border: `1px solid ${COLORS.steel}`,
+            }}
+          >
+            <span style={{ color: COLORS.text }}>
+              {a.student?.full_name} ↔ {a.coach?.full_name}
+            </span>
+            <span
+              className="text-xs"
+              style={{
+                color: a.status === "active" ? COLORS.red : COLORS.textMuted,
+              }}
+            >
+              {a.status === "active"
+                ? "Active"
+                : `Terminée — ${a.end_reason || "sans raison"}`}
+            </span>
+          </Link>
         ))}
       </div>
     </div>

@@ -9,12 +9,12 @@ export const COLORS = {
 };
 
 export const NAV_LINKS = [
-  { label: "Présentation", href: "#presentation" },
-  { label: "Objectifs", href: "#objectifs" },
-  { label: "Coachs", href: "#coachs" },
+  { label: "Présentation", href: "/#presentation" },
+  { label: "Objectifs", href: "/#objectifs" },
+  { label: "Coachs", href: "/#coachs" },
 ];
 
 export const DISCOVER_LINKS = [
-  { label: "Street Workout", href: "#objectifs" },
-  { label: "Nos programmes", href: "#objectifs" },
+  { label: "Street Workout", href: "/#objectifs" },
+  { label: "Nos programmes", href: "/#objectifs" },
 ];

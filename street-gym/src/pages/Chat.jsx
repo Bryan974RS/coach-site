@@ -6,7 +6,7 @@ import { COLORS } from "../data";
 
 export default function Chat() {
   const { assignmentId } = useParams();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
   const [uploading, setUploading] = useState(false);
@@ -127,40 +127,41 @@ export default function Chat() {
         ))}
         <div ref={bottomRef} />
       </div>
-
-      <form onSubmit={sendMessage} className="flex gap-2 items-center">
-        <label
-          className="cursor-pointer px-3 py-3 rounded-lg text-sm"
-          style={{ border: `1px solid ${COLORS.steel}`, color: COLORS.text }}
-        >
-          {uploading ? "..." : "📎"}
+      {profile?.role !== "admin" && (
+        <form onSubmit={sendMessage} className="flex gap-2 items-center">
+          <label
+            className="cursor-pointer px-3 py-3 rounded-lg text-sm"
+            style={{ border: `1px solid ${COLORS.steel}`, color: COLORS.text }}
+          >
+            {uploading ? "..." : "📎"}
+            <input
+              type="file"
+              accept="image/*,video/*"
+              onChange={handleFileUpload}
+              hidden
+            />
+          </label>
           <input
-            type="file"
-            accept="image/*,video/*"
-            onChange={handleFileUpload}
-            hidden
+            type="text"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            placeholder="Écris un message..."
+            className="flex-1 px-4 py-3 rounded-lg"
+            style={{
+              background: COLORS.bgAlt,
+              color: COLORS.text,
+              border: `1px solid ${COLORS.steel}`,
+            }}
           />
-        </label>
-        <input
-          type="text"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Écris un message..."
-          className="flex-1 px-4 py-3 rounded-lg"
-          style={{
-            background: COLORS.bgAlt,
-            color: COLORS.text,
-            border: `1px solid ${COLORS.steel}`,
-          }}
-        />
-        <button
-          type="submit"
-          className="font-semibold px-5 py-3 rounded-full"
-          style={{ background: COLORS.red, color: "#0B0B0C" }}
-        >
-          Envoyer
-        </button>
-      </form>
+          <button
+            type="submit"
+            className="font-semibold px-5 py-3 rounded-full"
+            style={{ background: COLORS.red, color: "#0B0B0C" }}
+          >
+            Envoyer
+          </button>
+        </form>
+      )}
     </div>
   );
 }
